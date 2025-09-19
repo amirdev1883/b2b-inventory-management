@@ -29,15 +29,22 @@ erDiagram
     PRODUCT ||--o{ PURCHASEORDERITEM : included_in
 ```
 
-🔄 Data Flow
+## 🔄 Data Flow
 flowchart TD
-    ReactUI[React Frontend] -->|Fetch API| DRF[DRF Endpoints]
-    DRF -->|Query| DB[(PostgreSQL)]
-    DRF -->|Async Jobs| Celery[Celery Worker]
-    Celery --> Redis[(Redis Broker)]
-    DRF -->|JWT Tokens| ReactUI
 
-🚀 Deployment Plan
+```mermaid
+    ReactUI[React Frontend] -->|Fetch API| DRF[DRF Endpoints]
+
+    DRF -->|Query| DB[(PostgreSQL)]
+
+    DRF -->|Async Jobs| Celery[Celery Worker]
+
+    Celery --> Redis[(Redis Broker)]
+
+    DRF -->|JWT Tokens| ReactUI
+```
+
+## 🚀 Deployment Plan
 
 Backend: Deployed with Gunicorn (ASGI) + Django on Render/Railway
 
