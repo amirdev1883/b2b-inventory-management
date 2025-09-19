@@ -1,9 +1,5 @@
 
----
 
-### 3️⃣ `docs/database_schema.md`
-
-```markdown
 # 🗄️ Database Schema (MVP)
 
 ## Entities
