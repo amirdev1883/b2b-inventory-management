@@ -30,9 +30,9 @@ erDiagram
 ```
 
 ## 🔄 Data Flow
-flowchart TD
 
 ```mermaid
+flowchart TD
     ReactUI[React Frontend] -->|Fetch API| DRF[DRF Endpoints]
 
     DRF -->|Query| DB[(PostgreSQL)]
