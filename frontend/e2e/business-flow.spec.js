@@ -53,13 +53,15 @@ test('complete purchasing, sales, invoice and session workflow', async ({ page }
   await expect(page.getByText('Received', { exact: true }).last()).toBeVisible();
   await expect(page.getByRole('dialog')).toHaveCount(1);
   await page.getByRole('button', { name: 'Close dialog', exact: true }).click();
-  await page.getByRole('link', { name: 'Sales orders', exact: true }).click();
-  await page.getByRole('button', { name: 'New sales order', exact: true }).click();
+  await page.getByRole('link', { name: 'Overview', exact: true }).click();
+  await page.getByRole('link', { name: 'New sales order', exact: false }).click();
   await page.getByLabel('Customer name').fill('Cedar Studio');
   await page.getByLabel('Product 1', { exact: true }).selectOption({ index: 1 });
   await page.getByLabel('Quantity 1', { exact: true }).fill('3');
   await page.getByLabel('Tax rate (%)', { exact: true }).fill('13');
   await page.getByRole('button', { name: 'Create draft order' }).click();
+  await expect(page.getByRole('button', { name: 'Confirm order', exact: true })).toBeVisible();
+  await page.reload();
   await page.getByRole('button', { name: 'Confirm order', exact: true }).click();
   await page
     .getByRole('dialog')

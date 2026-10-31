@@ -182,6 +182,7 @@ export default function Orders({ kind }) {
           onSaved={(order) => {
             setEditing(null);
             setSelected(order.id);
+            setParams({ order: order.id });
           }}
         />
       )}
