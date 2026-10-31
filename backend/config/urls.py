@@ -1,5 +1,5 @@
 from apps.analytics.views import DashboardView
-from apps.common.views import health, readiness
+from apps.common.views import WorkspaceView, health, readiness
 from apps.inventory.views import ProductViewSet, StockMovementViewSet
 from apps.orders.views import PurchaseOrderViewSet, SalesOrderViewSet
 from apps.suppliers.views import SupplierViewSet
@@ -18,7 +18,6 @@ from apps.users.views import (
 )
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 from rest_framework.routers import DefaultRouter
 
@@ -50,7 +49,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     re_path(
         r"^(?!api/|admin/|health/|ready/|static/).*$",
-        TemplateView.as_view(template_name="index.html"),
+        WorkspaceView.as_view(),
     ),
 ]
 admin.site.site_header = "B2B platform administration"

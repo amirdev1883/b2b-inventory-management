@@ -1,5 +1,6 @@
 from django.db import connection
 from django.http import JsonResponse
+from django.views.generic import TemplateView
 from rest_framework import viewsets
 
 
@@ -24,3 +25,8 @@ def readiness(request):
     except Exception:
         return JsonResponse({"status": "unavailable"}, status=503)
     return JsonResponse({"status": "ready"})
+
+
+class WorkspaceView(TemplateView):
+    def get_template_names(self):
+        return ["compiled/index.html", "index.html"]

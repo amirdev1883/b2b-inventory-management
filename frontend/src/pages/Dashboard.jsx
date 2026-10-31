@@ -88,7 +88,7 @@ export default function Dashboard() {
         title={`Hello, ${session.user.first_name || 'there'}.`}
         description="Here’s what’s happening across your business."
       >
-        <Link className="button primary" to="/sales">
+        <Link className="button primary" to="/sales?new=1">
           <ShoppingBag size={17} />
           New sales order
           <ArrowRight size={16} />

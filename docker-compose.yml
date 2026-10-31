@@ -48,6 +48,12 @@ services:
   backend:
     <<: *backend
     command: sh -c 'python manage.py migrate --noinput && python manage.py runserver 0.0.0.0:8000'
+    healthcheck:
+      test: [CMD, python, container_health.py]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
     ports:
       - 127.0.0.1:8000:8000
   worker:
@@ -55,7 +61,7 @@ services:
     command: celery -A config worker --loglevel=info
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
   beat:
@@ -63,7 +69,7 @@ services:
     command: celery -A config beat --loglevel=info --schedule=/tmp/celerybeat-schedule
     depends_on:
       backend:
-        condition: service_started
+        condition: service_healthy
       redis:
         condition: service_healthy
   frontend:

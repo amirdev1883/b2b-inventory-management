@@ -40,7 +40,7 @@ export default function Orders({ kind }) {
   const resource = sales ? 'sales-orders' : 'purchase-orders';
   const [params, setParams] = useSearchParams();
   const [selected, setSelected] = useState(params.get('order'));
-  const [editing, setEditing] = useState(null);
+  const [editing, setEditing] = useState(params.has('new') ? {} : null);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
@@ -175,7 +175,10 @@ export default function Orders({ kind }) {
           order={editing}
           resource={resource}
           sales={sales}
-          onClose={() => setEditing(null)}
+          onClose={() => {
+            setEditing(null);
+            setParams({});
+          }}
           onSaved={(order) => {
             setEditing(null);
             setSelected(order.id);

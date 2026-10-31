@@ -7,8 +7,8 @@ from pathlib import Path
 root = Path(__file__).resolve().parent.parent
 subprocess.run(["npm", "ci", "--no-audit", "--no-fund"], cwd=root / "frontend", check=True)
 subprocess.run(["npm", "run", "build"], cwd=root / "frontend", check=True)
-templates = root / "backend" / "templates"
-templates.mkdir(exist_ok=True)
+templates = root / "backend" / "templates" / "compiled"
+templates.mkdir(parents=True, exist_ok=True)
 shutil.copy2(root / "frontend" / "dist" / "index.html", templates / "index.html")
 shutil.copytree(
     root / "frontend" / "dist" / "assets",

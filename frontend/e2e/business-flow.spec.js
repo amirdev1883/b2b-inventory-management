@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 async function register(page) {
   await page.goto('/');
@@ -16,6 +17,11 @@ test('complete purchasing, sales, invoice and session workflow', async ({ page }
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await register(page);
+  await expect(page.getByText('Shipped revenue', { exact: true })).toBeVisible();
+  const accessibility = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
   await page.getByRole('link', { name: 'Suppliers', exact: true }).click();
   await page.getByRole('button', { name: 'Add supplier', exact: true }).click();
   await page.getByLabel('Supplier name').fill('Maple Partner');
@@ -86,6 +92,11 @@ test('complete purchasing, sales, invoice and session workflow', async ({ page }
 test('mobile navigation, empty states and sign out', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await register(page);
+  await expect(page.getByText('Shipped revenue', { exact: true })).toBeVisible();
+  const accessibility = await new AxeBuilder({ page })
+    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa'])
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

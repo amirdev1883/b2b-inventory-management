@@ -149,3 +149,5 @@ FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").rstrip("/")
 PASSWORD_RESET_TIMEOUT = 3600
 
 SECURE_REDIRECT_EXEMPT = [r"^health/$", r"^ready/$"]
+
+EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "10"))

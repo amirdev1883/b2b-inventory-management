@@ -22,7 +22,7 @@ FROM dependencies AS production
 RUN groupadd --gid 10001 app && useradd --uid 10001 --gid app --create-home app
 WORKDIR /app
 COPY --chown=app:app backend/ ./
-COPY --from=frontend --chown=app:app /site/dist/index.html /app/templates/index.html
+COPY --from=frontend --chown=app:app /site/dist/index.html /app/templates/compiled/index.html
 COPY --from=frontend --chown=app:app /site/dist/assets/ /app/static/assets/
 ENV DJANGO_SETTINGS_MODULE=config.settings.prod
 # Static collection only needs base settings; runtime production validation remains mandatory.

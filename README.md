@@ -2,6 +2,8 @@
 
 An API-first business workspace built with Django REST Framework and React. Each business has its own catalog, suppliers, team, orders and stock ledger.
 
+![Stockroom dashboard with sample data](docs/images/dashboard.png)
+
 ## What it does
 
 - **Business accounts:** registration, sign-in/out, rotating JWT sessions, password recovery and password changes.
@@ -42,7 +44,7 @@ The database lives in the `postgres_data` volume. Removing that volume deletes t
 
 ## Run without Docker
 
-Requires Python 3.12+ and Node 22.12+. SQLite is available for single-user development; use PostgreSQL for concurrent use and production.
+Requires Python 3.12+ and Node 22.13+. SQLite is available for single-user development; use PostgreSQL for concurrent use and production.
 
 ```bash
 python -m venv .venv
@@ -88,12 +90,14 @@ ruff format --check backend scripts
 python backend/manage.py makemigrations --check --dry-run
 python backend/manage.py spectacular --validate --fail-on-warn --file /tmp/schema.yaml
 pytest --cov --cov-report=term-missing --cov-fail-under=85
+pip-audit -r backend/requirements.txt --no-deps --disable-pip
 cd frontend
 npm ci
 npm run lint
 npm run format:check
 npm test
 npm run build
+npm audit --omit=dev --audit-level=high
 npx playwright install --with-deps chromium
 npm run test:e2e
 ```

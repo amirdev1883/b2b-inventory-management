@@ -7,7 +7,7 @@ from apps.orders.models import SalesOrder, SalesOrderItem
 from apps.orders.purchasing import transition_purchase
 from apps.orders.services import transition_sales
 from apps.users.models import User
-from django.db import close_old_connections, connection
+from django.db import close_old_connections, connection, connections
 from rest_framework.exceptions import ValidationError
 from rest_framework.test import APIClient
 
@@ -27,7 +27,7 @@ def run_together(functions):
             barrier.wait(timeout=10)
             return fn()
         finally:
-            close_old_connections()
+            connections.close_all()
 
     with ThreadPoolExecutor(max_workers=len(functions)) as executor:
         return list(executor.map(execute, functions))

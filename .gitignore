@@ -24,3 +24,5 @@ backend/static/assets/
 celerybeat-schedule*
 *.egg-info/
 build/
+
+backend/templates/compiled/
