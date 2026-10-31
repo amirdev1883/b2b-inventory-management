@@ -28,6 +28,10 @@ def render_invoice(order):
         author=order.invoice_snapshot.get("name", ""),
     )
     styles = getSampleStyleSheet()
+    styles["Title"].fontName = "InvoiceSans"
+    styles["Title"].fontSize = 22
+    styles["Title"].leading = 28
+    styles["Title"].textColor = colors.HexColor("#173e32")
     styles.add(ParagraphStyle("Body", fontName="InvoiceSans", fontSize=9, leading=14, spaceAfter=4))
     styles.add(ParagraphStyle("Amount", parent=styles["Body"], alignment=TA_RIGHT))
 
