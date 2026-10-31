@@ -21,12 +21,12 @@ jobs:
           POSTGRES_PASSWORD: b2b_ci_only
         ports: ['5432:5432']
         options: >-
-          --health-cmd 'pg_isready -U b2b -d b2b'
+          --health-cmd "pg_isready -U b2b -d b2b"
           --health-interval 5s --health-timeout 3s --health-retries 20
       redis:
         image: redis:7-alpine
         ports: ['6379:6379']
-        options: --health-cmd 'redis-cli ping' --health-interval 5s --health-timeout 3s --health-retries 20
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
     env:
       DATABASE_URL: postgresql://b2b:b2b_ci_only@127.0.0.1:5432/b2b
       REDIS_URL: redis://127.0.0.1:6379/0
