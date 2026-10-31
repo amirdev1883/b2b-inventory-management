@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stockroom-b2b"
+version = "1.0.0"
+description = "Tenant-isolated B2B inventory and order management"
+requires-python = ">=3.12"
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.2.0", "pytest-django==4.14.0", "pytest-cov==7.1.0", "ruff==0.17.3", "pip-audit==2.10.1"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["backend/requirements.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+include = ["apps*", "config*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+pythonpath = ["backend"]
+testpaths = ["backend/tests"]
+addopts = "--strict-markers -ra"
+markers = ["postgres: requires PostgreSQL row locking"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = ["backend/.venv", "*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+"backend/config/settings/*.py" = ["F403", "F405"]
+
+[tool.coverage.run]
+source = ["backend/apps"]
+omit = ["*/migrations/*", "*/management/*"]

@@ -1,0 +1,48 @@
+name: stockroom-production
+x-app: &app
+  image: ${STOCKROOM_IMAGE:-stockroom:production}
+  build:
+    context: .
+    dockerfile: backend/Dockerfile
+    target: production
+  env_file: .env.production
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  depends_on:
+    redis:
+      condition: service_healthy
+
+services:
+  backend:
+    <<: *app
+    ports:
+      - 127.0.0.1:8000:8000
+  worker:
+    <<: *app
+    command: celery -A config worker --loglevel=info
+    healthcheck:
+      disable: true
+  beat:
+    <<: *app
+    command: celery -A config beat --loglevel=info --schedule=/tmp/celerybeat-schedule
+    healthcheck:
+      disable: true
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes --maxmemory-policy noeviction
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+volumes:
+  redis_data:
